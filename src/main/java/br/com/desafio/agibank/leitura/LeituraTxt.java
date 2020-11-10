@@ -98,7 +98,7 @@ public class LeituraTxt {
 
 		String[] itens = split[2].replace("[", "").replace("]", "").split(",");
 
-		validaCamposItens(split);
+		validaCamposItens(itens);
 
 		for (var s : itens) {
 			String[] split2 = s.split("-");
