@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
 import br.com.desafio.agibank.modelos.Cliente;
 import br.com.desafio.agibank.modelos.Item;
+import br.com.desafio.agibank.modelos.Relatorio;
 import br.com.desafio.agibank.modelos.Venda;
 import br.com.desafio.agibank.modelos.Vendedor;
 import lombok.NoArgsConstructor;
@@ -22,21 +24,24 @@ public class LeituraTxt {
 	private String path = "HOMEPATH/data/in/arquivoTeste.txt";
 
 	private List<Vendedor> listaVendedor = new ArrayList<>();
-	
+
 	private List<Cliente> listaCliente = new ArrayList<>();
 
 	private List<Venda> listaVenda = new ArrayList<>();
 	
-	public void leituraArquivo() throws IOException {
+	private List<Item> listaItensTotais = new ArrayList<>();
+
+	public Relatorio leituraArquivo() throws IOException {
+		Relatorio relatorio = new Relatorio();
 		File fileReader = new File(path);
 		FileReader fr = new FileReader(fileReader);
-		
+
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
 			var line = "";
 			while (bufferedReader.ready()) {
 				line = bufferedReader.readLine();
 				var identificador = line.substring(0, 3);
-				
+
 				if (identificador.equals("001")) {
 					String[] split = line.split("ç");
 					listaVendedor.add(criaVendedor(split));
@@ -57,12 +62,31 @@ public class LeituraTxt {
 				}
 			}
 		}
+		relatorio.setQuantidadeVendedores(listaVendedor.size());
+		relatorio.setQuantidadeClientes(listaCliente.size());
+		relatorio.setIdVenda(vendaMaisCara(listaVenda));
+		relatorio.setPiorVendedor(piorVendedor(listaVenda));
 		
-		listaVendedor.stream().forEach(v -> System.out.println(v.toString()));
-		listaCliente.stream().forEach(v ->  System.out.println(v.toString()));
-		listaVenda.stream().forEach(v ->  System.out.println(v.toString()));
-
+		return relatorio;
 	}
+	
+	private Integer vendaMaisCara(List<Venda> vendas) {
+		var maisCara = vendas.stream()
+		.sorted((venda1, venda2) -> venda1.getVendaTotal().compareTo(venda2.getVendaTotal()))
+		.collect(Collectors.toList());
+		Collections.reverse(maisCara);		
+		
+		return maisCara.get(0).getId();
+	}
+	
+	private String piorVendedor(List<Venda> vendas) {
+		var pior = vendas.stream()
+				.sorted((venda1, venda2) -> venda1.getVendaTotal().compareTo(venda2.getVendaTotal()))
+				.collect(Collectors.toList());
+				
+		return pior.get(0).getNome();
+	}
+	
 
 	private Vendedor criaVendedor(String[] split) {
 		validaCamposVendedor(split);
@@ -89,8 +113,9 @@ public class LeituraTxt {
 
 	private void criaVenda(String[] split) {
 		validaCamposVenda(split);
+		double valorTotalVendas = 0;
 
-		Venda venda = new Venda();
+		var venda = new Venda();
 		venda.setId(Integer.valueOf(split[1]));
 		venda.setNome(split[3]);
 
@@ -108,11 +133,15 @@ public class LeituraTxt {
 			item.setQuantidade(Integer.valueOf(split2[1]));
 			item.setPreco(Double.valueOf(split2[2]));
 
-			listaItens.add(item);
-		}
+			item.setValorTotal(item.getQuantidade() * item.getPreco());
 
-		venda.setItem(listaItens.stream().sorted((item1, item2) -> item1.getPreco().compareTo(item2.getPreco()))
-				.collect(Collectors.toList()));
+			valorTotalVendas += item.getValorTotal();
+			
+			listaItens.add(item);			
+		}
+		listaItensTotais.addAll(listaItens);
+		venda.setVendaTotal(valorTotalVendas);
+		venda.setItem(listaItens);
 		listaVenda.add(venda);
 	}
 
