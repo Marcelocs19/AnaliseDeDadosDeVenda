@@ -117,7 +117,7 @@ public class LeituraTxt {
 	}
 
 	private void validaCamposVendedor(String[] split) {
-		if (split.length < 4) {
+		if (split.length < 4 || split.length > 4) {
 			throw new Excecao("Ocorreu um erro na leitura dos dados do Vendedor");
 		}
 		if (split[1].isBlank()) {
@@ -132,7 +132,7 @@ public class LeituraTxt {
 	}
 
 	private void validaCamposCliente(String[] split) {
-		if (split.length < 4) {
+		if (split.length < 4 || split.length > 4) {
 			throw new Excecao("Ocorreu um erro na leitura dos dados do Cliente");
 		}
 		if (split[1].isBlank()) {
@@ -147,7 +147,7 @@ public class LeituraTxt {
 	}
 
 	private void validaCamposVenda(String[] split) {
-		if (split.length < 4) {
+		if (split.length < 4 || split.length > 4) {
 			throw new Excecao("Ocorreu um erro na leitura dos dados de Venda");
 		}
 		if (split[1].isBlank()) {
@@ -159,7 +159,7 @@ public class LeituraTxt {
 	}
 
 	private void validaCamposItens(String[] split) {
-		if (split.length < 3) {
+		if (split.length < 3 || split.length > 3) {
 			throw new Excecao("Ocorreu um erro na leitura dos dados dos Itens");
 		}
 		if (split[0].isBlank()) {

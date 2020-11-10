@@ -10,7 +10,7 @@ public enum Erros {
 	MSG_ERRO_ID_VENDA("O campo id venda está incorreto"),
 	MSG_ERRO_ID_ITEM("O campo id item está incorreto"),
 	MSG_ERRO_QUANTIDADE("O campo id item está incorreto"),
-	MSG_ERRO_PRECO("O campo id item está incorreto");
+	MSG_ERRO_PRECO("O campo preço está incorreto");
 	
 	private final String descricao;
 	
