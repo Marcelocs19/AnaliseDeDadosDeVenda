@@ -7,7 +7,7 @@ import br.com.desafio.agibank.leitura.LeituraTxt;
 public class App {
 
 	public static void main(String[] args) {
-		LeituraTxt leitura = new LeituraTxt();
+		var leitura = new LeituraTxt();
 		
 		try {
 			
