@@ -3,6 +3,7 @@ package br.com.desafio.agibank;
 import java.io.IOException;
 
 import br.com.desafio.agibank.leitura.LeituraTxt;
+import br.com.desafio.agibank.modelos.Relatorio;
 
 public class App {
 
@@ -11,7 +12,7 @@ public class App {
 		
 		try {
 			
-			leitura.leituraArquivo();
+			Relatorio leituraArquivo = leitura.leituraArquivo();
 			
 		} catch (IOException e) {
 			

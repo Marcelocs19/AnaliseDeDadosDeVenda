@@ -17,4 +17,6 @@ public class Venda {
 	
 	private String nome;
 	
+	private Double vendaTotal;
+	
 }

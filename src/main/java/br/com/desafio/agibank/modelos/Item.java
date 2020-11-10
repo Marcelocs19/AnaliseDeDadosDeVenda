@@ -15,4 +15,6 @@ public class Item {
 	
 	private Double preco;
 
+	private Double valorTotal;
+	
 }
