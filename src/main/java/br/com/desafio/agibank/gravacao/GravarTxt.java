@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GravarTxt {
 
-	private String path = "HOMEPATH/data/out/relatorio.txt";
+	private String path = "/HOMEPATH/data/out/relatorio.txt";
 
 	public void gravarArquivoTxt(Relatorio leituraArquivo) throws IOException {
-		File fileReader = new File(path);
+		File fileReader = new File(System.getProperty("user.home"), "Desktop" + path);
 
 		if (!fileReader.exists()) {
 			fileReader.createNewFile();
@@ -23,10 +23,10 @@ public class GravarTxt {
 
 		} else {
 			int count = 1;
-			File file = new File("HOMEPATH/data/out/relatorio" + count + ".txt");
+			File file = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/out/relatorio" + count + ".txt");
 			while (file.exists()) {
 				count++;
-				file = new File("HOMEPATH/data/out/relatorio" + count + ".txt");
+				file = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/out/relatorio" + count + ".txt");
 			}
 			FileWriter arquivo = new FileWriter(file);
 			arquivo.write(formataSaidaTxt(leituraArquivo));
