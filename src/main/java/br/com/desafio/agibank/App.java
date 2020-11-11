@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.desafio.agibank.arquivo.gravacao.GravarTxt;
 import br.com.desafio.agibank.arquivo.leitura.LeituraTxt;
+import br.com.desafio.agibank.excecao.Excecao;
 import br.com.desafio.agibank.modelos.Relatorio;
 
 public class App {
@@ -21,8 +22,10 @@ public class App {
 				gravar.gravarArquivoTxt(leituraArquivo);
 			}
 			
-		} catch (IOException e) {
+		} catch (Excecao e) {
+			System.out.println(e.getMessage());
 			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
