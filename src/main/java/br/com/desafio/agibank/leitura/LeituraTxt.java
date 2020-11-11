@@ -21,8 +21,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LeituraTxt {
 
-	private String path = "/HOMEPATH/data/in/arquivoTeste.txt";
-
 	private List<Vendedor> listaVendedor = new ArrayList<>();
 
 	private List<Cliente> listaCliente = new ArrayList<>();
@@ -30,10 +28,22 @@ public class LeituraTxt {
 	private List<Venda> listaVenda = new ArrayList<>();
 	
 	private List<Item> listaItensTotais = new ArrayList<>();
+			
+	public List<String> pegaArquivoTxt() {
+		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/");		
+		String[] list = fileReader.list();
+		List<String> nomesArquivos = new ArrayList<>();
+		for(int i = 0; i < list.length; i++) {
+			if(list[i].contains(".txt")) {
+				nomesArquivos.add(list[i]);
+			}
+		}
+		return nomesArquivos;
+	}
 
-	public Relatorio leituraArquivo() throws IOException {
+	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
 		Relatorio relatorio = new Relatorio();
-		File fileReader = new File(System.getProperty("user.home"), "Desktop" + path);
+		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/" + nomeArquivo);	
 		FileReader fr = new FileReader(fileReader);
 
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
