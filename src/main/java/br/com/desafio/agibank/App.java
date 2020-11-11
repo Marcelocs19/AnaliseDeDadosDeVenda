@@ -3,8 +3,8 @@ package br.com.desafio.agibank;
 import java.io.IOException;
 import java.util.List;
 
-import br.com.desafio.agibank.gravacao.GravarTxt;
-import br.com.desafio.agibank.leitura.LeituraTxt;
+import br.com.desafio.agibank.arquivo.gravacao.GravarTxt;
+import br.com.desafio.agibank.arquivo.leitura.LeituraTxt;
 import br.com.desafio.agibank.modelos.Relatorio;
 
 public class App {
