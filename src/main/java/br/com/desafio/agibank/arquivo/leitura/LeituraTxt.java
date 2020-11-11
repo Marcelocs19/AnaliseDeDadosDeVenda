@@ -164,7 +164,7 @@ public class LeituraTxt {
 
 			valorTotalVendas += item.getValorTotal();
 			
-			Validacao.validaCamposItens(item);
+			Validacao.validaCamposItem(item);
 
 			listaItens.add(item);
 		}
