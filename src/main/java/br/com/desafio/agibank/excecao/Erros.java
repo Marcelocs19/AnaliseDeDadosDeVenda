@@ -2,6 +2,7 @@ package br.com.desafio.agibank.excecao;
 
 public enum Erros {
 	
+	MSG_ERRO_LEITURA_ARQUIVO("Ocorreu um erro na leitura do arquivo"),
 	MSG_ARQUIVO_VENDEDOR("Ocorreu um erro na leitura dos dados do Vendedor"),
 	MSG_ARQUIVO_CLIENTE("Ocorreu um erro na leitura dos dados do Cliente"),
 	MSG_ARQUIVO_VENDA("Ocorreu um erro na leitura dos dados de Venda"),

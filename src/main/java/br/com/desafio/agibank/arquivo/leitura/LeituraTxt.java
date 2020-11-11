@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
 import br.com.desafio.agibank.modelos.Cliente;
 import br.com.desafio.agibank.modelos.Item;
@@ -26,15 +27,15 @@ public class LeituraTxt {
 	private List<Cliente> listaCliente = new ArrayList<>();
 
 	private List<Venda> listaVenda = new ArrayList<>();
-	
+
 	private List<Item> listaItensTotais = new ArrayList<>();
-			
+
 	public List<String> pegaArquivoTxt() {
-		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/");		
+		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/");
 		String[] list = fileReader.list();
 		List<String> nomesArquivos = new ArrayList<>();
-		for(int i = 0; i < list.length; i++) {
-			if(list[i].contains(".txt")) {
+		for (int i = 0; i < list.length; i++) {
+			if (list[i].contains(".txt")) {
 				nomesArquivos.add(list[i]);
 			}
 		}
@@ -43,7 +44,7 @@ public class LeituraTxt {
 
 	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
 		Relatorio relatorio = new Relatorio();
-		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/" + nomeArquivo);	
+		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/" + nomeArquivo);
 		FileReader fr = new FileReader(fileReader);
 
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
@@ -54,7 +55,7 @@ public class LeituraTxt {
 
 				if (identificador.equals("001")) {
 					String[] split = line.split("ç");
-					listaVendedor.add(criaVendedor(split));
+					criaVendedor(split);
 				}
 
 				else if (identificador.equals("002")) {
@@ -68,7 +69,7 @@ public class LeituraTxt {
 				}
 
 				else {
-					throw new Excecao("Ocorreu um erro na leitura do arquivo");
+					throw new Excecao(Erros.MSG_ERRO_LEITURA_ARQUIVO.getDescricao());
 				}
 			}
 		}
@@ -76,64 +77,72 @@ public class LeituraTxt {
 		relatorio.setQuantidadeClientes(listaCliente.size());
 		relatorio.setIdVenda(vendaMaisCara(listaVenda));
 		relatorio.setPiorVendedor(piorVendedor(listaVenda));
-		
+
 		return relatorio;
 	}
-	
+
 	private Integer vendaMaisCara(List<Venda> vendas) {
 		var maisCara = vendas.stream()
-		.sorted((venda1, venda2) -> venda1.getVendaTotal().compareTo(venda2.getVendaTotal()))
-		.collect(Collectors.toList());
-		Collections.reverse(maisCara);		
-		
-		return maisCara.get(0).getId();
-	}
-	
-	private String piorVendedor(List<Venda> vendas) {
-		var pior = vendas.stream()
 				.sorted((venda1, venda2) -> venda1.getVendaTotal().compareTo(venda2.getVendaTotal()))
 				.collect(Collectors.toList());
-				
+		Collections.reverse(maisCara);
+
+		return maisCara.get(0).getId();
+	}
+
+	private String piorVendedor(List<Venda> vendas) {
+		var pior = vendas.stream().sorted((venda1, venda2) -> venda1.getVendaTotal().compareTo(venda2.getVendaTotal()))
+				.collect(Collectors.toList());
+
 		return pior.get(0).getNome();
 	}
-	
 
-	private Vendedor criaVendedor(String[] split) {
-		Validacao.validaCamposVendedor(split);
+	private void criaVendedor(String[] split) {
+		var vendedor = new Vendedor();
 
-		Vendedor vendedor = new Vendedor();
+		try {
+			vendedor.setCpf((split[1] != null) ? split[1] : null);
+			vendedor.setNome((split[2] != null) ? split[2] : null);
+			vendedor.setSalario(Double.valueOf((split[3] != null) ? split[3] : null));
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
 
-		vendedor.setCpf(split[1]);
-		vendedor.setNome(split[2]);
-		vendedor.setSalario(Double.valueOf(split[3]));
+		Validacao.validaCamposVendedor(vendedor);
 
-		return vendedor;
+		listaVendedor.add(vendedor);
 	}
 
 	private void criaCliente(String[] split) {
-		Validacao.validaCamposCliente(split);
+		var cliente = new Cliente();
 
-		Cliente cliente = new Cliente();
-		cliente.setCnpj(split[1]);
-		cliente.setNome(split[2]);
-		cliente.setBusinessArea(split[3]);
+		try {
+			cliente.setCnpj((split[1] != null) ? split[1] : null);
+			cliente.setNome((split[2] != null) ? split[2] : null);
+			cliente.setBusinessArea((split[3] != null) ? split[3] : null);
+
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		
+		Validacao.validaCamposCliente(cliente);
 
 		listaCliente.add(cliente);
 	}
 
 	private void criaVenda(String[] split) {
-		Validacao.validaCamposVenda(split);
 		double valorTotalVendas = 0;
 
 		var venda = new Venda();
-		venda.setId(Integer.valueOf(split[1]));
-		venda.setNome(split[3]);
+		try {
+			venda.setId(Integer.valueOf((split[1] != null) ? split[1] : null));
+			venda.setNome((split[3] != null) ? split[3] : null);
 
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		Validacao.validaCamposVenda(venda);
+		
 		List<Item> listaItens = new ArrayList<>();
 
 		String[] itens = split[2].replace("[", "").replace("]", "").split(",");
-
-		Validacao.validaCamposItens(itens);
 
 		for (var s : itens) {
 			String[] split2 = s.split("-");
@@ -147,14 +156,17 @@ public class LeituraTxt {
 
 			valorTotalVendas += item.getValorTotal();
 			
-			listaItens.add(item);			
+			Validacao.validaCamposItens(item);
+
+			listaItens.add(item);
 		}
+		
 		listaItensTotais.addAll(listaItens);
+		
 		venda.setVendaTotal(valorTotalVendas);
 		venda.setItem(listaItens);
+		
 		listaVenda.add(venda);
 	}
-
-	
 
 }
