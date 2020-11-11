@@ -1,5 +1,6 @@
 package br.com.desafio.agibank.validacao;
 
+import br.com.caelum.stella.validation.CNPJValidator;
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
@@ -50,6 +51,7 @@ public class Validacao {
 	}
 
 	public static void validaCamposCliente(Cliente cliente) {
+		validaCNPJ(cliente.getCnpj());
 		if (cliente.getCnpj().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_CNPJ.getDescricao());
 		}
@@ -90,6 +92,15 @@ public class Validacao {
 			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
 		}
 
+	}
+	
+	private static void validaCNPJ(String cnpj) {
+		CNPJValidator cnpjValidator = new CNPJValidator();
+		try {
+			cnpjValidator.assertValid(cnpj);				
+		} catch (Exception e) {
+			throw new Excecao(Erros.MSG_ERRO_CNPJ.getDescricao());
+		}
 	}
 
 }
