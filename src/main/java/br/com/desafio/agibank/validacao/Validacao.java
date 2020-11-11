@@ -1,5 +1,6 @@
 package br.com.desafio.agibank.validacao;
 
+import br.com.caelum.stella.validation.CPFValidator;
 import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
 import br.com.desafio.agibank.modelos.Cliente;
@@ -14,30 +15,30 @@ public class Validacao {
 	public static void validaVendedor(String[] split) {
 		if (split.length != 4) {
 			throw new Excecao(Erros.MSG_ARQUIVO_VENDEDOR.getDescricao());
-		}		
+		}
 	}
-	
+
 	public static void validaCliente(String[] split) {
 		if (split.length != 4) {
 			throw new Excecao(Erros.MSG_ARQUIVO_CLIENTE.getDescricao());
-		}	
+		}
 	}
-	
+
 	public static void validaVenda(String[] split) {
 		if (split.length != 4) {
 			throw new Excecao(Erros.MSG_ARQUIVO_VENDA.getDescricao());
-		}	
+		}
 	}
-	
+
 	public static void validaItem(String[] split) {
 		if (split.length != 3) {
 			throw new Excecao(Erros.MSG_ARQUIVO_ITEM.getDescricao());
-		}	
+		}
 	}
-	
-	
+
 	public static void validaCamposVendedor(Vendedor vendedor) {
-		if (vendedor.getCpf().isBlank()) {
+		validaCPF(vendedor.getCpf());
+		if (vendedor.getCpf().isBlank()) {			
 			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
 		}
 		if (vendedor.getNome().isBlank()) {
@@ -60,7 +61,7 @@ public class Validacao {
 		}
 	}
 
-	public static void validaCamposVenda(Venda venda) {		
+	public static void validaCamposVenda(Venda venda) {
 		if (venda.getId() == null) {
 			throw new Excecao(Erros.MSG_ERRO_ID_VENDA.getDescricao());
 		}
@@ -80,5 +81,15 @@ public class Validacao {
 			throw new Excecao(Erros.MSG_ERRO_PRECO.getDescricao());
 		}
 	}
-	
+
+	private static void validaCPF(String cpf) {
+		CPFValidator cpfValidator = new CPFValidator();
+		try {
+			cpfValidator.assertValid(cpf);			
+		} catch (Exception e) {
+			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
+		}
+
+	}
+
 }
