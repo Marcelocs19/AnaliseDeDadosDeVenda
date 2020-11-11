@@ -1,4 +1,4 @@
-package br.com.desafio.agibank.leitura;
+package br.com.desafio.agibank.arquivo.leitura;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,13 +9,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
 import br.com.desafio.agibank.modelos.Cliente;
 import br.com.desafio.agibank.modelos.Item;
 import br.com.desafio.agibank.modelos.Relatorio;
 import br.com.desafio.agibank.modelos.Venda;
 import br.com.desafio.agibank.modelos.Vendedor;
+import br.com.desafio.agibank.validacao.Validacao;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -99,7 +99,7 @@ public class LeituraTxt {
 	
 
 	private Vendedor criaVendedor(String[] split) {
-		validaCamposVendedor(split);
+		Validacao.validaCamposVendedor(split);
 
 		Vendedor vendedor = new Vendedor();
 
@@ -111,7 +111,7 @@ public class LeituraTxt {
 	}
 
 	private void criaCliente(String[] split) {
-		validaCamposCliente(split);
+		Validacao.validaCamposCliente(split);
 
 		Cliente cliente = new Cliente();
 		cliente.setCnpj(split[1]);
@@ -122,7 +122,7 @@ public class LeituraTxt {
 	}
 
 	private void criaVenda(String[] split) {
-		validaCamposVenda(split);
+		Validacao.validaCamposVenda(split);
 		double valorTotalVendas = 0;
 
 		var venda = new Venda();
@@ -133,7 +133,7 @@ public class LeituraTxt {
 
 		String[] itens = split[2].replace("[", "").replace("]", "").split(",");
 
-		validaCamposItens(itens);
+		Validacao.validaCamposItens(itens);
 
 		for (var s : itens) {
 			String[] split2 = s.split("-");
@@ -155,61 +155,6 @@ public class LeituraTxt {
 		listaVenda.add(venda);
 	}
 
-	private void validaCamposVendedor(String[] split) {
-		if (split.length < 4 || split.length > 4) {
-			throw new Excecao("Ocorreu um erro na leitura dos dados do Vendedor");
-		}
-		if (split[1].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
-		}
-		if (split[2].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
-		}
-		if (split[3].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_SALARIO.getDescricao());
-		}
-	}
-
-	private void validaCamposCliente(String[] split) {
-		if (split.length < 4 || split.length > 4) {
-			throw new Excecao("Ocorreu um erro na leitura dos dados do Cliente");
-		}
-		if (split[1].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_CNPJ.getDescricao());
-		}
-		if (split[2].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
-		}
-		if (split[3].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_BUSINESS_AREA.getDescricao());
-		}
-	}
-
-	private void validaCamposVenda(String[] split) {
-		if (split.length < 4 || split.length > 4) {
-			throw new Excecao("Ocorreu um erro na leitura dos dados de Venda");
-		}
-		if (split[1].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_ID_VENDA.getDescricao());
-		}
-		if (split[3].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
-		}
-	}
-
-	private void validaCamposItens(String[] split) {
-		if (split.length < 3 || split.length > 3) {
-			throw new Excecao("Ocorreu um erro na leitura dos dados dos Itens");
-		}
-		if (split[0].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_ID_ITEM.getDescricao());
-		}
-		if (split[1].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_QUANTIDADE.getDescricao());
-		}
-		if (split[2].isBlank()) {
-			throw new Excecao(Erros.MSG_ERRO_PRECO.getDescricao());
-		}
-	}
+	
 
 }

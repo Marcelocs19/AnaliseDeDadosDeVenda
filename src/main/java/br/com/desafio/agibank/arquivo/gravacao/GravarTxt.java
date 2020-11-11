@@ -1,4 +1,4 @@
-package br.com.desafio.agibank.gravacao;
+package br.com.desafio.agibank.arquivo.gravacao;
 
 import java.io.File;
 import java.io.FileWriter;
