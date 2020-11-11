@@ -29,16 +29,24 @@ public class LeituraTxt {
 	private List<Venda> listaVenda = new ArrayList<>();
 
 	private List<Item> listaItensTotais = new ArrayList<>();
+	
+	private List<String> listaArquivosLidos = new ArrayList<>();
 
 	public List<String> pegaArquivoTxt() {
 		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/");
-		String[] list = fileReader.list();
+		var list = fileReader.list();
 		List<String> nomesArquivos = new ArrayList<>();
 		for (int i = 0; i < list.length; i++) {
 			if (list[i].contains(".txt")) {
-				nomesArquivos.add(list[i]);
+				var arquivo = list[i];
+				if(!listaArquivosLidos.contains(arquivo)) {
+					nomesArquivos.add(arquivo);
+					listaArquivosLidos.add(arquivo);					
+				}
+				
 			}
 		}
+		
 		return nomesArquivos;
 	}
 
@@ -54,17 +62,17 @@ public class LeituraTxt {
 				var identificador = line.substring(0, 3);
 
 				if (identificador.equals("001")) {
-					String[] split = line.split("ç");
+					var split = line.split("ç");
 					criaVendedor(split);
 				}
 
 				else if (identificador.equals("002")) {
-					String[] split = line.split("ç");
+					var split = line.split("ç");
 					criaCliente(split);
 				}
 
 				else if (identificador.equals("003")) {
-					String[] split = line.split("ç");
+					var split = line.split("ç");
 					criaVenda(split);
 				}
 
@@ -142,10 +150,10 @@ public class LeituraTxt {
 		
 		List<Item> listaItens = new ArrayList<>();
 
-		String[] itens = split[2].replace("[", "").replace("]", "").split(",");
+		var itens = split[2].replace("[", "").replace("]", "").split(",");
 
 		for (var s : itens) {
-			String[] split2 = s.split("-");
+			var split2 = s.split("-");
 
 			Item item = new Item();
 			item.setId(Integer.valueOf(split2[0]));

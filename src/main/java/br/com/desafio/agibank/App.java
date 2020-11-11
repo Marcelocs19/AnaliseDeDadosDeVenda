@@ -14,19 +14,28 @@ public class App {
 		var leitura = new LeituraTxt();
 		var gravar = new GravarTxt();
 		
-		List<String> pegaArquivoTxt = leitura.pegaArquivoTxt();
-		
-		try {			
-			for (String arq : pegaArquivoTxt) {
-				Relatorio leituraArquivo = leitura.leituraArquivo(arq);
-				gravar.gravarArquivoTxt(leituraArquivo);
+		while(true) {
+			List<String> pegaArquivoTxt = leitura.pegaArquivoTxt();
+			
+			for(int i = 0; i < pegaArquivoTxt.size(); i++) {
+				System.out.println(pegaArquivoTxt.get(i));
 			}
 			
-		} catch (Excecao e) {
-			System.out.println(e.getMessage());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
+			if(!pegaArquivoTxt.isEmpty()) {
+				try {			
+					for (String arq : pegaArquivoTxt) {
+						Relatorio leituraArquivo = leitura.leituraArquivo(arq);
+						gravar.gravarArquivoTxt(leituraArquivo);
+					}
+					
+				} catch (Excecao e) {
+					System.out.println(e.getMessage());
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}			
+				
+			}
 		}
 	}
 }
