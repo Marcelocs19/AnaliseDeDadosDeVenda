@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LeituraTxt {
 
-	private String path = "HOMEPATH/data/in/arquivoTeste.txt";
+	private String path = "/HOMEPATH/data/in/arquivoTeste.txt";
 
 	private List<Vendedor> listaVendedor = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class LeituraTxt {
 
 	public Relatorio leituraArquivo() throws IOException {
 		Relatorio relatorio = new Relatorio();
-		File fileReader = new File(path);
+		File fileReader = new File(System.getProperty("user.home"), "Desktop" + path);
 		FileReader fr = new FileReader(fileReader);
 
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
