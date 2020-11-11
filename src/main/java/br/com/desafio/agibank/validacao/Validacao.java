@@ -37,7 +37,7 @@ public class Validacao {
 		}
 	}
 
-	public static void validaCamposVendedor(Vendedor vendedor) {
+	public static boolean validaCamposVendedor(Vendedor vendedor) {
 		validaCPF(vendedor.getCpf());
 		if (vendedor.getCpf().isBlank()) {			
 			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
@@ -48,9 +48,10 @@ public class Validacao {
 		if (vendedor.getSalario() == null) {
 			throw new Excecao(Erros.MSG_ERRO_SALARIO.getDescricao());
 		}
+		return true;
 	}
 
-	public static void validaCamposCliente(Cliente cliente) {
+	public static boolean validaCamposCliente(Cliente cliente) {
 		validaCNPJ(cliente.getCnpj());
 		if (cliente.getCnpj().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_CNPJ.getDescricao());
@@ -61,18 +62,20 @@ public class Validacao {
 		if (cliente.getBusinessArea().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_BUSINESS_AREA.getDescricao());
 		}
+		return true;
 	}
 
-	public static void validaCamposVenda(Venda venda) {
+	public static boolean validaCamposVenda(Venda venda) {
 		if (venda.getId() == null) {
 			throw new Excecao(Erros.MSG_ERRO_ID_VENDA.getDescricao());
 		}
 		if (venda.getNome().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
 		}
+		return true;
 	}
 
-	public static void validaCamposItens(Item item) {
+	public static boolean validaCamposItem(Item item) {
 		if (item.getId() == null) {
 			throw new Excecao(Erros.MSG_ERRO_ID_ITEM.getDescricao());
 		}
@@ -82,6 +85,7 @@ public class Validacao {
 		if (item.getPreco() == null) {
 			throw new Excecao(Erros.MSG_ERRO_PRECO.getDescricao());
 		}
+		return true;
 	}
 
 	private static void validaCPF(String cpf) {
