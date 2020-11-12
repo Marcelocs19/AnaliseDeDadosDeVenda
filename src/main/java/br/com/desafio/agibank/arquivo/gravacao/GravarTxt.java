@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class GravarTxt {
-
-	private String path = "/HOMEPATH/data/out/relatorio.txt";
+	
+	private String path = "Desktop/HOMEPATH/data/out/relatorio.txt";
 
 	public void gravarArquivoTxt(Relatorio leituraArquivo) throws IOException {
-		File fileReader = new File(System.getProperty("user.home"), "Desktop" + path);
+		File fileReader = new File(System.getProperty("user.home"), path);
 
 		if (!fileReader.exists()) {
 			fileReader.createNewFile();

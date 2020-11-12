@@ -31,9 +31,11 @@ public class LeituraTxt {
 	private List<Item> listaItensTotais = new ArrayList<>();
 	
 	private List<String> listaArquivosLidos = new ArrayList<>();
+	
+	private String path = "Desktop/HOMEPATH/data/in/";
 
 	public List<String> pegaArquivoTxt() {
-		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/");
+		File fileReader = new File(System.getProperty("user.home"), path);
 		var list = fileReader.list();
 		List<String> nomesArquivos = new ArrayList<>();
 		for (int i = 0; i < list.length; i++) {
@@ -52,7 +54,7 @@ public class LeituraTxt {
 
 	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
 		Relatorio relatorio = new Relatorio();
-		File fileReader = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/in/" + nomeArquivo);
+		File fileReader = new File(System.getProperty("user.home"), path + nomeArquivo);
 		FileReader fr = new FileReader(fileReader);
 
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
