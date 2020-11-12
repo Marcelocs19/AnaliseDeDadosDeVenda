@@ -17,10 +17,6 @@ public class App {
 		while(true) {
 			List<String> pegaArquivoTxt = leitura.pegaArquivoTxt();
 			
-			for(int i = 0; i < pegaArquivoTxt.size(); i++) {
-				System.out.println(pegaArquivoTxt.get(i));
-			}
-			
 			if(!pegaArquivoTxt.isEmpty()) {
 				try {			
 					for (String arq : pegaArquivoTxt) {
