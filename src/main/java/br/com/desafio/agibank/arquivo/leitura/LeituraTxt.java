@@ -29,26 +29,22 @@ public class LeituraTxt {
 	private List<Venda> listaVenda = new ArrayList<>();
 
 	private List<Item> listaItensTotais = new ArrayList<>();
-	
+
 	private List<String> listaArquivosLidos = new ArrayList<>();
-	
+
 	private String path = "Desktop/HOMEPATH/data/in/";
 
 	public List<String> pegaArquivoTxt() {
 		File fileReader = new File(System.getProperty("user.home"), path);
 		var list = fileReader.list();
 		List<String> nomesArquivos = new ArrayList<>();
-		for (int i = 0; i < list.length; i++) {
-			if (list[i].contains(".txt")) {
-				var arquivo = list[i];
-				if(!listaArquivosLidos.contains(arquivo)) {
-					nomesArquivos.add(arquivo);
-					listaArquivosLidos.add(arquivo);					
-				}
-				
+		for (String nome : list) {
+			if (nome.contains(".txt") && !listaArquivosLidos.contains(nome)) {
+				nomesArquivos.add(nome);
+				listaArquivosLidos.add(nome);
 			}
 		}
-		
+
 		return nomesArquivos;
 	}
 
@@ -59,6 +55,7 @@ public class LeituraTxt {
 
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
 			var line = "";
+			
 			while (bufferedReader.ready()) {
 				line = bufferedReader.readLine();
 				var identificador = line.substring(0, 3);
@@ -130,8 +127,9 @@ public class LeituraTxt {
 			cliente.setNome((split[2] != null) ? split[2] : null);
 			cliente.setBusinessArea((split[3] != null) ? split[3] : null);
 
-		} catch (ArrayIndexOutOfBoundsException e) {}
-		
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
 		Validacao.validaCamposCliente(cliente);
 
 		listaCliente.add(cliente);
@@ -149,7 +147,7 @@ public class LeituraTxt {
 		}
 
 		Validacao.validaCamposVenda(venda);
-		
+
 		List<Item> listaItens = new ArrayList<>();
 
 		var itens = split[2].replace("[", "").replace("]", "").split(",");
@@ -165,17 +163,17 @@ public class LeituraTxt {
 			item.setValorTotal(item.getQuantidade() * item.getPreco());
 
 			valorTotalVendas += item.getValorTotal();
-			
+
 			Validacao.validaCamposItem(item);
 
 			listaItens.add(item);
 		}
-		
+
 		listaItensTotais.addAll(listaItens);
-		
+
 		venda.setVendaTotal(valorTotalVendas);
 		venda.setItem(listaItens);
-		
+
 		listaVenda.add(venda);
 	}
 
