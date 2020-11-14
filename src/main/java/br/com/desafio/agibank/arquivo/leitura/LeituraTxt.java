@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import br.com.desafio.agibank.arquivo.gravacao.GravarTxt;
 import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
 import br.com.desafio.agibank.modelos.Cliente;
@@ -20,7 +22,7 @@ import br.com.desafio.agibank.validacao.Validacao;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class LeituraTxt {
+public class LeituraTxt extends TimerTask {
 
 	private List<Vendedor> listaVendedor = new ArrayList<>();
 
@@ -31,11 +33,32 @@ public class LeituraTxt {
 	private List<Item> listaItensTotais = new ArrayList<>();
 
 	private List<String> listaArquivosLidos = new ArrayList<>();
+	
+	private GravarTxt gravarTxt = new GravarTxt();
 
-	private String path = "Desktop/HOMEPATH/data/in/";
+	private String path = "C:\\data\\in\\";
+	
+	public void iniciaProjeto() {
+		List<String> pegaArquivoTxt = pegaArquivoTxt();
+		if(!pegaArquivoTxt.isEmpty()) {
+			try {			
+				for (String arq : pegaArquivoTxt) {
+					Relatorio leituraArquivo = leituraArquivo(arq);
+					gravarTxt.gravarArquivoTxt(leituraArquivo);
+				}
+				
+			} catch (Excecao e) {
+				System.out.println(e.getMessage());
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+			
+		}
+	}
 
 	public List<String> pegaArquivoTxt() {
-		File fileReader = new File(System.getProperty("user.home"), path);
+		File fileReader = new File( path);
 		var list = fileReader.list();
 		List<String> nomesArquivos = new ArrayList<>();
 		for (String nome : list) {
@@ -50,7 +73,7 @@ public class LeituraTxt {
 
 	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
 		Relatorio relatorio = new Relatorio();
-		File fileReader = new File(System.getProperty("user.home"), path + nomeArquivo);
+		File fileReader = new File(path + nomeArquivo);
 		FileReader fr = new FileReader(fileReader);
 
 		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
@@ -175,6 +198,11 @@ public class LeituraTxt {
 		venda.setItem(listaItens);
 
 		listaVenda.add(venda);
+	}
+
+	@Override
+	public void run() {
+		iniciaProjeto();
 	}
 
 }
