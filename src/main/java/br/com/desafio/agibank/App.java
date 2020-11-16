@@ -12,7 +12,7 @@ public class App {
 		
 		var analiseDados = new AnaliseDadosServico();
 		
-		timer.schedule(analiseDados, new Date(), 6000);
+		timer.schedule(analiseDados, new Date(), 600);
 		
 	}
 }
