@@ -1,4 +1,4 @@
-package br.com.desafio.agibank.modelos;
+package br.com.desafio.agibank.modelo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

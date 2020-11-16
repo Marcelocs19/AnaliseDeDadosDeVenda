@@ -4,31 +4,30 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import br.com.desafio.agibank.modelos.Relatorio;
+import br.com.desafio.agibank.modelo.Relatorio;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class GravarTxt {
 	
-	private String path = "Desktop/HOMEPATH/data/out/relatorio.txt";
+	private static String CAMINHO = "C:\\data\\out\\relatorio.txt";
 
 	public void gravarArquivoTxt(Relatorio leituraArquivo) throws IOException {
-		File fileReader = new File(System.getProperty("user.home"), path);
+		File pastaArquivo = new File(CAMINHO);
 
-		if (!fileReader.exists()) {
-			fileReader.createNewFile();
-			FileWriter arquivo = new FileWriter(fileReader);
+		if (!pastaArquivo.exists()) {
+			pastaArquivo.createNewFile();
+			FileWriter arquivo = new FileWriter(pastaArquivo);
 			arquivo.write(formataSaidaTxt(leituraArquivo));
 			arquivo.close();
 
 		} else {
-			int count = 1;
-			File file = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/out/relatorio" + count + ".txt");
-			while (file.exists()) {
-				count++;
-				file = new File(System.getProperty("user.home"), "Desktop/HOMEPATH/data/out/relatorio" + count + ".txt");
+			int contador = 1;
+			File arquivoNovo = new File("C:\\data\\out\\relatorio" + contador + ".txt");
+			while (arquivoNovo.exists()) {
+				arquivoNovo = new File("C:\\data\\out\\relatorio" + ++contador + ".txt");
 			}
-			FileWriter arquivo = new FileWriter(file);
+			FileWriter arquivo = new FileWriter(arquivoNovo);
 			arquivo.write(formataSaidaTxt(leituraArquivo));
 			arquivo.close();
 

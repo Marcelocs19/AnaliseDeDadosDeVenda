@@ -1,4 +1,4 @@
-package br.com.desafio.agibank.modelos;
+package br.com.desafio.agibank.modelo;
 
 import java.util.List;
 
