@@ -39,10 +39,10 @@ public class Validacao {
 
 	public static boolean validaCamposVendedor(Vendedor vendedor) {
 		validaCPF(vendedor.getCpf());
-		if (vendedor.getCpf().isBlank()) {			
+		if (vendedor.getCpf() == null || vendedor.getCpf().isBlank()) {			
 			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
 		}
-		if (vendedor.getNome().isBlank()) {
+		if (vendedor.getNome() == null || vendedor.getNome().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
 		}
 		if (vendedor.getSalario() == null) {
@@ -53,13 +53,13 @@ public class Validacao {
 
 	public static boolean validaCamposCliente(Cliente cliente) {
 		validaCNPJ(cliente.getCnpj());
-		if (cliente.getCnpj().isBlank()) {
+		if (cliente.getCnpj() == null || cliente.getCnpj().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_CNPJ.getDescricao());
 		}
-		if (cliente.getNome().isBlank()) {
+		if (cliente.getNome() == null || cliente.getNome().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
 		}
-		if (cliente.getBusinessArea().isBlank()) {
+		if (cliente.getBusinessArea() == null || cliente.getBusinessArea().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_BUSINESS_AREA.getDescricao());
 		}
 		return true;
@@ -69,7 +69,7 @@ public class Validacao {
 		if (venda.getId() == null) {
 			throw new Excecao(Erros.MSG_ERRO_ID_VENDA.getDescricao());
 		}
-		if (venda.getNome().isBlank()) {
+		if (venda.getNome() == null || venda.getNome().isBlank()) {
 			throw new Excecao(Erros.MSG_ERRO_NOME.getDescricao());
 		}
 		return true;
@@ -88,8 +88,11 @@ public class Validacao {
 		return true;
 	}
 
-	private static void validaCPF(String cpf) {
+	private static void validaCPF(String cpf) {		
 		CPFValidator cpfValidator = new CPFValidator();
+		if (cpf == null || cpf.isBlank()) {			
+			throw new Excecao(Erros.MSG_ERRO_CPF.getDescricao());
+		}
 		try {
 			cpfValidator.assertValid(cpf);			
 		} catch (Exception e) {
@@ -100,6 +103,9 @@ public class Validacao {
 	
 	private static void validaCNPJ(String cnpj) {
 		CNPJValidator cnpjValidator = new CNPJValidator();
+		if (cnpj == null || cnpj.isBlank()) {
+			throw new Excecao(Erros.MSG_ERRO_CNPJ.getDescricao());
+		}
 		try {
 			cnpjValidator.assertValid(cnpj);				
 		} catch (Exception e) {

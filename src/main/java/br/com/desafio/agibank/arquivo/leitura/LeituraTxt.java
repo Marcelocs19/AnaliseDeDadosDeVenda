@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +51,7 @@ public class LeituraTxt {
 
 	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
 		File pastaArquivo = new File(CAMINHO + nomeArquivo);
-		FileReader arquivo = new FileReader(pastaArquivo);
+		FileReader arquivo = new FileReader(pastaArquivo, StandardCharsets.UTF_8);
 
 		try (BufferedReader buffer = new BufferedReader(arquivo)) {
 			var linha = "";
@@ -131,9 +132,10 @@ public class LeituraTxt {
 	}
 
 	private void criaVenda(String[] separador) {
-		double valorTotalVendas = 0;
-
 		var venda = new Venda();
+		
+		double valorTotalVendas = 0;
+		
 		try {
 			venda.setId(Integer.valueOf((separador[1] != null) ? separador[1] : null));
 			venda.setNome((separador[3] != null) ? separador[3] : null);
