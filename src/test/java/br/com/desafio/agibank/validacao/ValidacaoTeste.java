@@ -8,10 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.desafio.agibank.excecao.Erros;
-import br.com.desafio.agibank.modelos.Cliente;
-import br.com.desafio.agibank.modelos.Item;
-import br.com.desafio.agibank.modelos.Venda;
-import br.com.desafio.agibank.modelos.Vendedor;
+import br.com.desafio.agibank.modelo.Cliente;
+import br.com.desafio.agibank.modelo.Item;
+import br.com.desafio.agibank.modelo.Venda;
+import br.com.desafio.agibank.modelo.Vendedor;
 
 public class ValidacaoTeste {
 		

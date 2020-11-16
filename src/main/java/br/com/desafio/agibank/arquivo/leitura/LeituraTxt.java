@@ -7,22 +7,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-import br.com.desafio.agibank.arquivo.gravacao.GravarTxt;
 import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
-import br.com.desafio.agibank.modelos.Cliente;
-import br.com.desafio.agibank.modelos.Item;
-import br.com.desafio.agibank.modelos.Relatorio;
-import br.com.desafio.agibank.modelos.Venda;
-import br.com.desafio.agibank.modelos.Vendedor;
+import br.com.desafio.agibank.modelo.Cliente;
+import br.com.desafio.agibank.modelo.Item;
+import br.com.desafio.agibank.modelo.Relatorio;
+import br.com.desafio.agibank.modelo.Venda;
+import br.com.desafio.agibank.modelo.Vendedor;
 import br.com.desafio.agibank.validacao.Validacao;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class LeituraTxt extends TimerTask {
+public class LeituraTxt {
 
 	private List<Vendedor> listaVendedor = new ArrayList<>();
 
@@ -33,35 +31,14 @@ public class LeituraTxt extends TimerTask {
 	private List<Item> listaItensTotais = new ArrayList<>();
 
 	private List<String> listaArquivosLidos = new ArrayList<>();
-	
-	private GravarTxt gravarTxt = new GravarTxt();
 
-	private String path = "C:\\data\\in\\";
-	
-	public void iniciaProjeto() {
-		List<String> pegaArquivoTxt = pegaArquivoTxt();
-		if(!pegaArquivoTxt.isEmpty()) {
-			try {			
-				for (String arq : pegaArquivoTxt) {
-					Relatorio leituraArquivo = leituraArquivo(arq);
-					gravarTxt.gravarArquivoTxt(leituraArquivo);
-				}
-				
-			} catch (Excecao e) {
-				System.out.println(e.getMessage());
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
-			
-		}
-	}
+	private static String CAMINHO = "C:\\data\\in\\";
 
 	public List<String> pegaArquivoTxt() {
-		File fileReader = new File( path);
-		var list = fileReader.list();
+		File pastaArquivo = new File(CAMINHO);
+		var listaNomes = pastaArquivo.list();
 		List<String> nomesArquivos = new ArrayList<>();
-		for (String nome : list) {
+		for (String nome : listaNomes) {
 			if (nome.contains(".txt") && !listaArquivosLidos.contains(nome)) {
 				nomesArquivos.add(nome);
 				listaArquivosLidos.add(nome);
@@ -72,30 +49,29 @@ public class LeituraTxt extends TimerTask {
 	}
 
 	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
-		Relatorio relatorio = new Relatorio();
-		File fileReader = new File(path + nomeArquivo);
-		FileReader fr = new FileReader(fileReader);
+		File pastaArquivo = new File(CAMINHO + nomeArquivo);
+		FileReader arquivo = new FileReader(pastaArquivo);
 
-		try (BufferedReader bufferedReader = new BufferedReader(fr)) {
-			var line = "";
+		try (BufferedReader buffer = new BufferedReader(arquivo)) {
+			var linha = "";
 			
-			while (bufferedReader.ready()) {
-				line = bufferedReader.readLine();
-				var identificador = line.substring(0, 3);
+			while (buffer.ready()) {
+				linha = buffer.readLine();
+				var identificador = linha.substring(0, 3);
 
 				if (identificador.equals("001")) {
-					var split = line.split("ç");
-					criaVendedor(split);
+					var separador = linha.split("ç");
+					criaVendedor(separador);
 				}
 
 				else if (identificador.equals("002")) {
-					var split = line.split("ç");
-					criaCliente(split);
+					var separador = linha.split("ç");
+					criaCliente(separador);
 				}
 
 				else if (identificador.equals("003")) {
-					var split = line.split("ç");
-					criaVenda(split);
+					var separador = linha.split("ç");
+					criaVenda(separador);
 				}
 
 				else {
@@ -103,13 +79,9 @@ public class LeituraTxt extends TimerTask {
 				}
 			}
 		}
-		relatorio.setQuantidadeVendedores(listaVendedor.size());
-		relatorio.setQuantidadeClientes(listaCliente.size());
-		relatorio.setIdVenda(vendaMaisCara(listaVenda));
-		relatorio.setPiorVendedor(piorVendedor(listaVenda));
-
-		return relatorio;
+		return criaRelatorio();
 	}
+	
 
 	private Integer vendaMaisCara(List<Venda> vendas) {
 		var maisCara = vendas.stream()
@@ -127,13 +99,13 @@ public class LeituraTxt extends TimerTask {
 		return pior.get(0).getNome();
 	}
 
-	private void criaVendedor(String[] split) {
+	private void criaVendedor(String[] separador) {
 		var vendedor = new Vendedor();
 
 		try {
-			vendedor.setCpf((split[1] != null) ? split[1] : null);
-			vendedor.setNome((split[2] != null) ? split[2] : null);
-			vendedor.setSalario(Double.valueOf((split[3] != null) ? split[3] : null));
+			vendedor.setCpf((separador[1] != null) ? separador[1] : null);
+			vendedor.setNome((separador[2] != null) ? separador[2] : null);
+			vendedor.setSalario(Double.valueOf((separador[3] != null) ? separador[3] : null));
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
@@ -142,13 +114,13 @@ public class LeituraTxt extends TimerTask {
 		listaVendedor.add(vendedor);
 	}
 
-	private void criaCliente(String[] split) {
+	private void criaCliente(String[] separador) {
 		var cliente = new Cliente();
 
 		try {
-			cliente.setCnpj((split[1] != null) ? split[1] : null);
-			cliente.setNome((split[2] != null) ? split[2] : null);
-			cliente.setBusinessArea((split[3] != null) ? split[3] : null);
+			cliente.setCnpj((separador[1] != null) ? separador[1] : null);
+			cliente.setNome((separador[2] != null) ? separador[2] : null);
+			cliente.setBusinessArea((separador[3] != null) ? separador[3] : null);
 
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
@@ -158,13 +130,13 @@ public class LeituraTxt extends TimerTask {
 		listaCliente.add(cliente);
 	}
 
-	private void criaVenda(String[] split) {
+	private void criaVenda(String[] separador) {
 		double valorTotalVendas = 0;
 
 		var venda = new Venda();
 		try {
-			venda.setId(Integer.valueOf((split[1] != null) ? split[1] : null));
-			venda.setNome((split[3] != null) ? split[3] : null);
+			venda.setId(Integer.valueOf((separador[1] != null) ? separador[1] : null));
+			venda.setNome((separador[3] != null) ? separador[3] : null);
 
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
@@ -173,15 +145,15 @@ public class LeituraTxt extends TimerTask {
 
 		List<Item> listaItens = new ArrayList<>();
 
-		var itens = split[2].replace("[", "").replace("]", "").split(",");
+		var itens = separador[2].replace("[", "").replace("]", "").split(",");
 
 		for (var s : itens) {
-			var split2 = s.split("-");
+			var separadorItens = s.split("-");
 
 			Item item = new Item();
-			item.setId(Integer.valueOf(split2[0]));
-			item.setQuantidade(Integer.valueOf(split2[1]));
-			item.setPreco(Double.valueOf(split2[2]));
+			item.setId(Integer.valueOf(separadorItens[0]));
+			item.setQuantidade(Integer.valueOf(separadorItens[1]));
+			item.setPreco(Double.valueOf(separadorItens[2]));
 
 			item.setValorTotal(item.getQuantidade() * item.getPreco());
 
@@ -199,10 +171,16 @@ public class LeituraTxt extends TimerTask {
 
 		listaVenda.add(venda);
 	}
+	
+	private Relatorio criaRelatorio() {
+		Relatorio relatorio = new Relatorio();
+		
+		relatorio.setQuantidadeVendedores(listaVendedor.size());
+		relatorio.setQuantidadeClientes(listaCliente.size());
+		relatorio.setIdVenda(vendaMaisCara(listaVenda));
+		relatorio.setPiorVendedor(piorVendedor(listaVenda));
 
-	@Override
-	public void run() {
-		iniciaProjeto();
+		return relatorio;
 	}
 
 }

@@ -4,10 +4,10 @@ import br.com.caelum.stella.validation.CNPJValidator;
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.desafio.agibank.excecao.Erros;
 import br.com.desafio.agibank.excecao.Excecao;
-import br.com.desafio.agibank.modelos.Cliente;
-import br.com.desafio.agibank.modelos.Item;
-import br.com.desafio.agibank.modelos.Venda;
-import br.com.desafio.agibank.modelos.Vendedor;
+import br.com.desafio.agibank.modelo.Cliente;
+import br.com.desafio.agibank.modelo.Item;
+import br.com.desafio.agibank.modelo.Venda;
+import br.com.desafio.agibank.modelo.Vendedor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

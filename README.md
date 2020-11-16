@@ -1,4 +1,4 @@
-# AnaliseDeDadosDeVenda [![Build Status](https://travis-ci.org/Marcelocs19/AnaliseDeDadosDeVenda.svg?branch=main)](https://travis-ci.org/Marcelocs19/AnaliseDeDadosDeVenda.svg?branch=main)
+# AnaliseDeDadosDeVenda [![Build Status](https://travis-ci.org/Marcelocs19/AnaliseDeDadosDeVenda.svg?branch=main)](https://travis-ci.org/Marcelocs19/AnaliseDeDadosDeVenda)
 Criar um sistema de análise de dados de venda que irá importar lotes de arquivos e produzir um relatório baseado em informações presentes no mesmo. Existem 3 tipos de dados dentro dos arquivos e eles podem ser distinguidos pelo seu identificador que estará presente na primeira coluna de cada linha, onde o separador de colunas é o caractere “ç”.
 
 
@@ -17,7 +17,7 @@ https://github.com/Marcelocs19/AnaliseDeDadosDeVenda
 ```
 
 ### Rodar a aplicação localmente
-Criar estas pastas "HOMEPATH\data", e colocar duas pastas chamadas "in" e "out" no diretório Desktop. Dentro da pasta "in" colocar arquivos .txt como por exemplo:
+Criar a pasta "data" no diretório "C:\\" , e colocar duas pastas dentro, chamadas "in" e "out". Dentro da pasta "in" colocar o(s) arquivo(s) .txt com este formato por exemplo:
 ```
 001ç65275832060çPedroç50000
 001ç34240297001çPauloç40000.99
