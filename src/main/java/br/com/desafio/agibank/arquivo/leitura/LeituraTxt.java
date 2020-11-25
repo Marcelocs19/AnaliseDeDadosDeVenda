@@ -1,10 +1,10 @@
 package br.com.desafio.agibank.arquivo.leitura;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,36 +50,31 @@ public class LeituraTxt {
 	}
 
 	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
-		File pastaArquivo = new File(CAMINHO + nomeArquivo);
-		FileReader arquivo = new FileReader(pastaArquivo, StandardCharsets.UTF_8);
+        Path path = Paths.get(CAMINHO + nomeArquivo);
 
-		try (BufferedReader buffer = new BufferedReader(arquivo)) {
-			var linha = "";
-			
-			while (buffer.ready()) {
-				linha = buffer.readLine();
-				var identificador = linha.substring(0, 3);
+        Files.lines(path).forEach(linha -> {
+        	var identificador = linha.substring(0, 3);
 
-				if (identificador.equals("001")) {
-					var separador = linha.split("ç");
-					criaVendedor(separador);
-				}
-
-				else if (identificador.equals("002")) {
-					var separador = linha.split("ç");
-					criaCliente(separador);
-				}
-
-				else if (identificador.equals("003")) {
-					var separador = linha.split("ç");
-					criaVenda(separador);
-				}
-
-				else {
-					throw new Excecao(Erros.MSG_ERRO_LEITURA_ARQUIVO.getDescricao());
-				}
+			if (identificador.equals("001")) {
+				var separador = linha.split("ç");
+				criaVendedor(separador);
 			}
-		}
+
+			else if (identificador.equals("002")) {
+				var separador = linha.split("ç");
+				criaCliente(separador);
+			}
+
+			else if (identificador.equals("003")) {
+				var separador = linha.split("ç");
+				criaVenda(separador);
+			}
+
+			else {
+				throw new Excecao(Erros.MSG_ERRO_LEITURA_ARQUIVO.getDescricao());
+			}
+        });
+
 		return criaRelatorio();
 	}
 	
