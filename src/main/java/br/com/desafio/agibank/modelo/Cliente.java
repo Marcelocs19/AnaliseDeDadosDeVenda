@@ -14,5 +14,11 @@ public class Cliente {
 	private String nome;
 	
 	private String businessArea;
-	
+
+	public void populaCliente(String[] separador) {
+		this.setCnpj((separador[1] != null) ? separador[1] : null);
+		this.setNome((separador[2] != null) ? separador[2] : null);
+		this.setBusinessArea((separador[3] != null) ? separador[3] : null);
+	}
+
 }

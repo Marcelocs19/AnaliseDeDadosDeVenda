@@ -3,10 +3,6 @@ package br.com.desafio.agibank.excecao;
 public enum Erros {
 	
 	MSG_ERRO_LEITURA_ARQUIVO("Ocorreu um erro na leitura do arquivo"),
-	MSG_ARQUIVO_VENDEDOR("Ocorreu um erro na leitura dos dados do Vendedor"),
-	MSG_ARQUIVO_CLIENTE("Ocorreu um erro na leitura dos dados do Cliente"),
-	MSG_ARQUIVO_VENDA("Ocorreu um erro na leitura dos dados de Venda"),
-	MSG_ARQUIVO_ITEM("Ocorreu um erro na leitura dos dados dos Itens"),
 	MSG_ERRO_CPF("O campo cpf está incorreto"),
 	MSG_ERRO_NOME("O campo nome está incorreto"),
 	MSG_ERRO_SALARIO("O campo salário está incorreto"),
