@@ -16,24 +16,21 @@ public class AnaliseDadosServico extends TimerTask {
 	private GravarTxt gravarTxt = new GravarTxt();
 	
 	public void iniciaProjeto() {
-		List<String> pegaArquivoTxt = leituraTxt.pegaArquivoTxt();
+		var pegaArquivoTxt = leituraTxt.pegaArquivoTxt();
 		if(!pegaArquivoTxt.isEmpty()) {
 			try {			
 				for (String arq : pegaArquivoTxt) {
 					Relatorio leituraArquivo = leituraTxt.leituraArquivo(arq);
 					gravarTxt.gravarArquivoTxt(leituraArquivo);
 				}
-				
 			} catch (Excecao e) {
 				System.out.println(e.getMessage());
-				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			
-			
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		iniciaProjeto();
