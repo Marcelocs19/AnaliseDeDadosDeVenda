@@ -32,9 +32,7 @@ public class CriacaoDadosServico {
         var vendedor = new Vendedor();
 
         try {
-            vendedor.setCpf((separador[1] != null) ? separador[1] : null);
-            vendedor.setNome((separador[2] != null) ? separador[2] : null);
-            vendedor.setSalario(Double.valueOf((separador[3] != null) ? separador[3] : null));
+            vendedor.populaVendedor(separador);
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -50,10 +48,7 @@ public class CriacaoDadosServico {
         var cliente = new Cliente();
 
         try {
-            cliente.setCnpj((separador[1] != null) ? separador[1] : null);
-            cliente.setNome((separador[2] != null) ? separador[2] : null);
-            cliente.setBusinessArea((separador[3] != null) ? separador[3] : null);
-
+            cliente.populaCliente(separador);
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -72,9 +67,7 @@ public class CriacaoDadosServico {
         double valorTotalVendas = 0;
 
         try {
-            venda.setId(Integer.valueOf((separador[1] != null) ? separador[1] : null));
-            venda.setNome((separador[3] != null) ? separador[3] : null);
-
+            venda.populaVenda(separador);
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -89,11 +82,7 @@ public class CriacaoDadosServico {
             var separadorItens = s.split("-");
 
             var item = new Item();
-            item.setId(Integer.valueOf(separadorItens[0]));
-            item.setQuantidade(Integer.valueOf(separadorItens[1]));
-            item.setPreco(Double.valueOf(separadorItens[2]));
-
-            item.setValorTotal(item.getQuantidade() * item.getPreco());
+            item.populaItem(separadorItens);
 
             valorTotalVendas += item.getValorTotal();
 

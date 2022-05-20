@@ -11,28 +11,29 @@ import br.com.desafio.agibank.modelo.Relatorio;
 
 public class AnaliseDadosServico extends TimerTask {
 
-	private LeituraTxt leituraTxt = new LeituraTxt();
-	
-	private GravarTxt gravarTxt = new GravarTxt();
-	
-	public void iniciaProjeto() {
-		var pegaArquivoTxt = leituraTxt.pegaArquivoTxt();
-		if(!pegaArquivoTxt.isEmpty()) {
-			try {			
-				for (String arq : pegaArquivoTxt) {
-					Relatorio leituraArquivo = leituraTxt.leituraArquivo(arq);
-					gravarTxt.gravarArquivoTxt(leituraArquivo);
-				}
-			} catch (Excecao e) {
-				System.out.println(e.getMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
-		}
-	}
+    private LeituraTxt leituraTxt = new LeituraTxt();
 
-	@Override
-	public void run() {
-		iniciaProjeto();
-	}
+    private GravarTxt gravarTxt = new GravarTxt();
+
+    public void iniciaProjeto() {
+        var pegaArquivoTxt = leituraTxt.pegaArquivoTxt();
+        if (!pegaArquivoTxt.isEmpty()) {
+            try {
+                for (String arq : pegaArquivoTxt) {
+                    Relatorio leituraArquivo = leituraTxt.leituraArquivo(arq);
+                    gravarTxt.gravarArquivoTxt(leituraArquivo);
+                    leituraTxt.limpaListas();
+                }
+            } catch (Excecao e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+        iniciaProjeto();
+    }
 }

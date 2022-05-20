@@ -18,5 +18,10 @@ public class Venda {
 	private String nome;
 	
 	private Double vendaTotal;
-	
+
+	public void populaVenda(String[] separador) {
+		this.setId(Integer.valueOf((separador[1] != null) ? separador[1] : null));
+		this.setNome((separador[3] != null) ? separador[3] : null);
+	}
+
 }

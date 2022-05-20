@@ -27,58 +27,57 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LeituraTxt {
 
-	private List<Vendedor> listaVendedor = new ArrayList<>();
+    private List<Vendedor> listaVendedor = new ArrayList<>();
 
-	private List<Cliente> listaCliente = new ArrayList<>();
+    private List<Cliente> listaCliente = new ArrayList<>();
 
-	private List<Venda> listaVenda = new ArrayList<>();
+    private List<Venda> listaVenda = new ArrayList<>();
 
-	private List<String> listaArquivosLidos = new ArrayList<>();
+    private List<String> listaArquivosLidos = new ArrayList<>();
 
-	private CriacaoDadosServico criacaoDadosServico = new CriacaoDadosServico();
+    private CriacaoDadosServico criacaoDadosServico = new CriacaoDadosServico();
 
-	private RelatorioServico relatorioServico = new RelatorioServico();
+    private RelatorioServico relatorioServico = new RelatorioServico();
 
-	public List<String> pegaArquivoTxt() {
-		var pastaArquivo = new File(Caminho.CAMINHO_IN.getDescricao());
-		var listaNomes = pastaArquivo.list();
-		List<String> nomesArquivos = new ArrayList<>();
-		for (var nome : listaNomes) {
-			if (nome.contains(".txt") && !listaArquivosLidos.contains(nome)) {
-				nomesArquivos.add(nome);
-				listaArquivosLidos.add(nome);
-			}
-		}
-		return nomesArquivos;
-	}
+    public List<String> pegaArquivoTxt() {
+        var pastaArquivo = new File(Caminho.CAMINHO_ENTRADA.getDescricao());
+        List<String> nomesArquivos = new ArrayList<>();
+        for (var nome : pastaArquivo.list()) {
+            if (nome.contains(".txt") && !listaArquivosLidos.contains(nome)) {
+                nomesArquivos.add(nome);
+                listaArquivosLidos.add(nome);
+            }
+        }
+        return nomesArquivos;
+    }
 
-	public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
-        var path = Paths.get(Caminho.CAMINHO_IN.getDescricao() + nomeArquivo);
+    public Relatorio leituraArquivo(String nomeArquivo) throws IOException {
+        var path = Paths.get(Caminho.CAMINHO_ENTRADA.getDescricao() + nomeArquivo);
 
-        Files.lines(path).forEach(linha -> {
-        	var identificador = linha.substring(0, 3);
-
-			if (identificador.equals("001")) {
-				var separador = linha.split("ç");
-				listaVendedor = criacaoDadosServico.criaVendedor(separador, listaVendedor);
-			}
-
-			else if (identificador.equals("002")) {
-				var separador = linha.split("ç");
-				listaCliente = criacaoDadosServico.criaCliente(separador, listaCliente);
-			}
-
-			else if (identificador.equals("003")) {
-				var separador = linha.split("ç");
-				listaVenda = criacaoDadosServico.criaVenda(separador, listaVenda);
-			}
-
-			else {
-				throw new Excecao(Erros.MSG_ERRO_LEITURA_ARQUIVO.getDescricao());
-			}
+        Files.lines(path).forEach(l -> {
+            var linha = l.split("ç");
+            switch (linha[0]) {
+                case "001":
+                    listaVendedor = criacaoDadosServico.criaVendedor(linha, listaVendedor);
+                    break;
+                case "002":
+                    listaCliente = criacaoDadosServico.criaCliente(linha, listaCliente);
+                    break;
+                case "003":
+                    listaVenda = criacaoDadosServico.criaVenda(linha, listaVenda);
+                    break;
+                default:
+                    throw new Excecao(Erros.MSG_ERRO_LEITURA_ARQUIVO.getDescricao());
+            }
         });
 
-		return relatorioServico.geraRelatorio(listaVendedor.size(), listaCliente.size(), listaVenda);
-	}
+        return relatorioServico.geraRelatorio(listaVendedor.size(), listaCliente.size(), listaVenda);
+    }
+
+    public void limpaListas() {
+        listaVendedor = new ArrayList<>();
+        listaCliente = new ArrayList<>();
+        listaVenda = new ArrayList<>();
+    }
 
 }

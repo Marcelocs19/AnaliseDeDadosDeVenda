@@ -9,7 +9,7 @@ public class RelatorioServico {
 
     private CriacaoDadosServico criacaoDadosServico = new CriacaoDadosServico();
 
-    public Relatorio geraRelatorio(final int qtdVendedores, final int qtdClientes, List<Venda> listaVenda ) {
+    public Relatorio geraRelatorio(final int qtdVendedores, final int qtdClientes, List<Venda> listaVenda) {
         var relatorio = new Relatorio();
 
         relatorio.setQuantidadeVendedores(qtdVendedores);
