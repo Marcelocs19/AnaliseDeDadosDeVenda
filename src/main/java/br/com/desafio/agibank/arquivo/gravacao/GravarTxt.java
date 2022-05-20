@@ -16,10 +16,10 @@ public class GravarTxt {
 	private int contador = 1;
 
 	public void gravarArquivoTxt(Relatorio leituraArquivo) throws IOException {
-		var pastaArquivo = new File(Caminho.CAMINHO_SAIDA.getDescricao());
+		var pastaArquivo = new File(Caminho.CAMINHO_SAIDA.getDescricao() + "relatorio.txt");
 
 		if (!pastaArquivo.exists()) {
-			Files.createDirectories(Path.of(Caminho.CAMINHO_SAIDA.getDescricao() + "relatorio.txt"));
+			Files.createDirectories(Path.of(Caminho.CAMINHO_SAIDA.getDescricao()));
 			pastaArquivo.createNewFile();
 			var arquivo = new FileWriter(pastaArquivo);
 			arquivo.write(formataSaidaTxt(leituraArquivo));
